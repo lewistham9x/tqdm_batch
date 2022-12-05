@@ -10,7 +10,7 @@ from .task_wrapper import task_wrapper
 from dotenv import load_dotenv
 import os
 
-from queue import Queue
+from multiprocessing.queues import Queue
 
 load_dotenv()
 
@@ -97,7 +97,7 @@ def batch_process(
 
     finally:
         # Stop the progress bar thread
-        # queue.put('done')
+        queue.put('done')
         progproc.join()
 
     # Flatten result
