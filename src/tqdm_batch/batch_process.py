@@ -14,6 +14,18 @@ from queue import Queue
 
 load_dotenv()
 
+
+def get_work_tasks_queue():
+    global work_tasks_queue
+    # singleton:
+    if work_tasks_queue is None:
+        work_tasks_queue = Queue()
+    return work_tasks_queue
+class QueueManager(BaseManager): 
+    pass
+  
+QueueManager.register("Queue", get_work_tasks_queue)
+
 def batch_process(
     items: list,
     function: Callable,
@@ -65,15 +77,7 @@ def batch_process(
     else:
         totals = len(items)
         
-    def get_work_tasks_queue():
-        global work_tasks_queue
-        # singleton:
-        if work_tasks_queue is None:
-            work_tasks_queue = Queue()
-        return work_tasks_queue
 
-    class QueueManager(BaseManager): pass
-    QueueManager.register("Queue")
     # Start progress bar in separate thread
     manager = QueueManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
     
