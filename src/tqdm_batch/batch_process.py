@@ -8,6 +8,8 @@ from joblib import Parallel, delayed
 from .progress_bar import progress_bar
 from .task_wrapper import task_wrapper
 
+import os
+
 
 def batch_process(
     items: list,
@@ -61,7 +63,7 @@ def batch_process(
         totals = len(items)
 
     # Start progress bar in separate thread
-    manager = BaseManager(address=('127.0.0.1', 0))
+    manager = BaseManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))))
     manager.connect()
     queue = manager.queue()
     try:
