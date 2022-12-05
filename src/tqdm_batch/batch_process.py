@@ -73,7 +73,7 @@ def batch_process(
         return work_tasks_queue
 
     class QueueManager(BaseManager): pass
-    QueueManager.register("work_tasks_queue", callable=get_work_tasks_queue)
+    QueueManager.register("work_tasks_queue")
     # Start progress bar in separate thread
     manager = QueueManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
     
