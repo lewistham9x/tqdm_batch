@@ -10,7 +10,7 @@ from .task_wrapper import task_wrapper
 from dotenv import load_dotenv
 import os
 
-from multiprocessing.queues import Queue
+from multiprocessing import Queue
 
 load_dotenv()
 
