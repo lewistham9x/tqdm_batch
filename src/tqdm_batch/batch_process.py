@@ -24,7 +24,7 @@ def get_work_tasks_queue():
 class QueueManager(BaseManager): 
     pass
   
-QueueManager.register("Queue", get_work_tasks_queue)
+QueueManager.register("Queue", lambda: get_work_tasks_queue)
 
 def batch_process(
     items: list,
