@@ -62,7 +62,8 @@ def batch_process(
 
     # Start progress bar in separate thread
     manager = BaseManager(address=('127.0.0.1', 0))
-    queue = manager.Queue()
+    manager.connect()
+    queue = manager.queue()
     try:
         progproc = Thread(target=progress_bar, args=(totals, queue))
         progproc.start()
