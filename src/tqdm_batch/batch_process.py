@@ -97,7 +97,7 @@ def batch_process(
 
     finally:
         # Stop the progress bar thread
-        queue.put('done')
+        # queue.put('done')
         progproc.join()
 
     # Flatten result
