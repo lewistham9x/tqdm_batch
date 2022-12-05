@@ -65,7 +65,7 @@ def batch_process(
         totals = len(items)
 
     # Start progress bar in separate thread
-    manager = BaseManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY"))
+    manager = BaseManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
     manager.connect()
     queue = manager.queue()
     try:
