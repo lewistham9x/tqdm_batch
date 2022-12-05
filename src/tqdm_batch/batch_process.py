@@ -10,6 +10,7 @@ from .task_wrapper import task_wrapper
 from dotenv import load_dotenv
 import os
 
+from queue import Queue
 
 load_dotenv()
 
@@ -63,10 +64,21 @@ def batch_process(
         totals = [len(batch) for batch in batches]
     else:
         totals = len(items)
+        
+    def get_work_tasks_queue():
+        global work_tasks_queue
+        # singleton:
+        if work_tasks_queue is None:
+            work_tasks_queue = Queue()
+        return work_tasks_queue
 
+    class QueueManager(BaseManager): pass
+    QueueManager.register("queue", callable=get_work_tasks_queue)
     # Start progress bar in separate thread
-    manager = BaseManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
+    manager = QueueManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
+    
     manager.connect()
+        
     queue = manager.queue()
     try:
         progproc = Thread(target=progress_bar, args=(totals, queue))
