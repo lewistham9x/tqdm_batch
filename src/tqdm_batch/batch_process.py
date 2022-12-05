@@ -73,13 +73,13 @@ def batch_process(
         return work_tasks_queue
 
     class QueueManager(BaseManager): pass
-    QueueManager.register("work_tasks_queue")
+    QueueManager.register("Queue")
     # Start progress bar in separate thread
     manager = QueueManager(address=(os.getenv("MANAGER_ADDRESS"), int(os.getenv("MANAGER_PORT"))), authkey=os.getenv("MANAGER_KEY").encode("utf-8"))
     
     manager.connect()
         
-    queue = manager.work_tasks_queue()
+    queue = manager.Queue()
     try:
         progproc = Thread(target=progress_bar, args=(totals, queue))
         progproc.start()
