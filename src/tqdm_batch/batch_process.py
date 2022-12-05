@@ -1,7 +1,7 @@
 from typing import List, Dict, Union, Callable
 from  math import ceil
 from threading import Thread
-from multiprocessing import Manager
+from multiprocessing.managers import BaseManager
 
 from joblib import Parallel, delayed
 
@@ -61,7 +61,7 @@ def batch_process(
         totals = len(items)
 
     # Start progress bar in separate thread
-    manager = Manager(address=('127.0.0.1', 0))
+    manager = BaseManager(address=('127.0.0.1', 0))
     queue = manager.Queue()
     try:
         progproc = Thread(target=progress_bar, args=(totals, queue))
