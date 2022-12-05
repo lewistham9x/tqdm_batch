@@ -61,7 +61,7 @@ def batch_process(
         totals = len(items)
 
     # Start progress bar in separate thread
-    manager = Manager()
+    manager = Manager(address=('127.0.0.1', 0))
     queue = manager.Queue()
     try:
         progproc = Thread(target=progress_bar, args=(totals, queue))
