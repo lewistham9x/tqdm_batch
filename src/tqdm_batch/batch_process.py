@@ -3,8 +3,7 @@ from  math import ceil
 from threading import Thread
 # from multiprocessing.managers import BaseManager
 
-from joblib import Parallel, delayed
-
+from joblib import Parallel, delayed, parallel_backend
 from .progress_bar import progress_bar
 from .task_wrapper import task_wrapper
 from dotenv import load_dotenv
@@ -88,12 +87,13 @@ def batch_process(
         progproc = Thread(target=progress_bar, args=(totals, queue))
         progproc.start()
 
+        with parallel_backend('threading', n_jobs=2):
         # Parallel process the batches
-        result = Parallel(n_jobs=n_workers)(
-            delayed(task_wrapper)
-            (pid, function, batch, queue, *args, **kwargs)
-            for pid, batch in enumerate(batches)
-        )
+            result = Parallel()(
+                delayed(task_wrapper)
+                (pid, function, batch, queue, *args, **kwargs)
+                for pid, batch in  enumerate(batches)
+            )
 
     finally:
         # Stop the progress bar thread
