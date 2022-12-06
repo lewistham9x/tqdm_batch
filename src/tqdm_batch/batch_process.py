@@ -1,7 +1,7 @@
 from typing import List, Dict, Union, Callable
 from  math import ceil
 from threading import Thread
-from multiprocessing.managers import BaseManager
+# from multiprocessing.managers import BaseManager
 
 from joblib import Parallel, delayed
 
@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import os
 
 from multiprocessing import Queue
-
+from multiprocessing.managers import SyncManager
 load_dotenv()
 
 
@@ -21,10 +21,10 @@ def get_work_tasks_queue():
     if work_tasks_queue is None:
         work_tasks_queue = Queue()
     return work_tasks_queue
-class QueueManager(BaseManager): 
+class QueueManager(SyncManager): 
     pass
   
-QueueManager.register("Queue", lambda: get_work_tasks_queue)
+# QueueManager.register("Queue", lambda: get_work_tasks_queue)
 
 def batch_process(
     items: list,
