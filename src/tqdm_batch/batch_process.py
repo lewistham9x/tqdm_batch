@@ -87,7 +87,7 @@ def batch_process(
         progproc = Thread(target=progress_bar, args=(totals, queue))
         progproc.start()
 
-        with parallel_backend('threading', n_jobs=2):
+        with parallel_backend('threading', n_jobs=n_workers):
         # Parallel process the batches
             result = Parallel()(
                 delayed(task_wrapper)
